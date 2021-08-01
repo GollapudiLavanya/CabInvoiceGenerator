@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CabInvoiceGenerator;
 
-namespace CabInvoiceUnitTest
+namespace CabInvoiceTestProject
 {
     [TestClass]
     public class UnitTest1
@@ -57,10 +57,32 @@ namespace CabInvoiceUnitTest
             //Arrange
             Ride[] rides = { new Ride(12.0, 5), new Ride(3.5, 1) };
             //Act
+            double expected = 80.5;
             InvoiceSummary summary = invoice.CalculateFare(rides);
-            InvoiceSummary expectedSummary = new InvoiceSummary(2, 161.0);
+            double actual = summary.averageFare;
             //Assert
-            Assert.AreEqual(summary, expectedSummary);
+            Assert.AreEqual(expected, actual);
+        }
+        /// <summary>
+        /// Given User id returns the invoice
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Invoice")]
+        public void GivenDistanceAndTimeShouldReturnInvoice()
+        {
+            ///AAA Methodology
+            //Arrange
+            string userId = "John";
+            Ride[] rides = { new Ride(12.0, 5), new Ride(3.5, 1) };
+            //Act
+            RideRepository rideRepository = new RideRepository();
+            rideRepository.AddRide(userId, rides);
+            Ride[] actualRides = rideRepository.GetRides(userId);
+            InvoiceSummary summary = invoice.CalculateFare(rides);
+            double expected = 80.5;
+            double actual = summary.averageFare;
+            //Assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }
